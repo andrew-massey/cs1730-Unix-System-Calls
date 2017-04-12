@@ -1,4 +1,4 @@
-#include <sys/time.h>
+#include <time.h>
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool yearCal;
+int offset;
 
 int getMonth(int month, int argc, char *argv[]);
 int getYear(int year, int argc, char *argv[]);
@@ -16,10 +18,11 @@ int computeOffset(int year, int month);
 int numDaysYear(int year);
 int numDaysMonth(int year, int month);
 bool isLeapYear(int year);
-void display(int year, int month, int offset);
+void display(int year, int month, int offset, int argc);
 
 int main(int argc, char *argv[])
 {
+   yearCal = false;
    int numDays;
    int offset;
    int month;
@@ -31,7 +34,7 @@ int main(int argc, char *argv[])
 
    offset = computeOffset(year, month);
 
-   display(year, month, offset);
+   display(year, month, offset, argc);
 
    return 0;
 }
@@ -39,30 +42,61 @@ int main(int argc, char *argv[])
 
 int getMonth(int month, int argc, char *argv[])
 {
+  time_t rawtime;
+  struct tm * timeinfo;
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+  
+  char month4[10];
+  char* month1;
+  
   if(argc == 1){
-    
+    strftime(month4, sizeof(month1), "%m", timeinfo);
+    month = strtol(month4,&month1,10);
+    cout << "passed"<<endl;
   }
   else if(argc == 2){
-    month = -1;
+    month = 1;
+    yearCal = true;
   }
   else{
-    string month1 = argv[1];
+    month1 = argv[1];
     month = stoi(month1);
   }
+  if(month<1||month>13){
+    cout << "Illegal use: month must be between 1-12" << endl;
+    return EXIT_FAILURE;
+    }
    return month;
 }
 
 int getYear(int year, int argc, char *argv[])
 {
+  time_t rawtime;
+  struct tm * timeinfo;
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+  
+  char year4[10];
+  char* year1;
+  
   if(argc == 1){
-    
+    strftime(year4, sizeof(year1), "%G", timeinfo);
+    year = strtol(year4,&year1,10);
+    cout << "passed"<<endl;
   }
+  
   else if(argc == 2){
-    year = -1;
+    year1 = argv[1];
+    year = stoi(year1);
   }
   else{
-    string year1 = argv[2];
+    year1 = argv[2];
     year = stoi(year1);
+  }
+  if(year>9999||year<1){
+    cout << "Illegal use: year must be between 1-9999" << endl;
+    return EXIT_FAILURE;
   }
    return year;
 }
@@ -71,7 +105,9 @@ int getYear(int year, int argc, char *argv[])
 int computeOffset(int year, int month)
 {
    int offset = 0;
-   int count = year - 1753;
+   int count;
+   if(year>1752){count = year - 1753;}
+   else{count = year+3;}
    for ( int iYear = 0; iYear < count; iYear++)
    {
       offset = ( offset + 365 + isLeapYear(year)) % 7;
@@ -132,17 +168,43 @@ int numDaysMonth(int year, int month)
 
 bool isLeapYear(int year)
 {
-   if ( year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+  if(year<1752){
+    if(year%4==0){return true;}
+    else{return false;}
+  }
+  else{  
+    if ( year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
       return true;
-   else
+    else
       return false;
+  }
 }
-void display(int year, int month, int offset)
+void display(int year, int month, int offset, int argc)
  {
+   int dayCal = 0;
+   if(yearCal){
+      cout<<"\t     ";
+      cout<<year<<endl;
+    }
+    if(argc==1){
+      time_t rawtime;
+      struct tm * timeinfo;
+      time (&rawtime);
+      timeinfo = localtime (&rawtime);
+      char day2[10];
+      char* day1;
+      strftime(day2, sizeof(day1), "%d", timeinfo);
+      dayCal = strtol(day2,&day1,10); 
+      
+    }
+    
+    
+ do{
+    if(offset == 7) offset = 0;
     int dayOfWeek;
     int day;
-
-    cout << endl;
+    if(!yearCal) cout << endl;
+    cout<<"\t   ";
     if ( month == 1)
        cout << "January";
     else if ( month == 2)
@@ -169,7 +231,8 @@ void display(int year, int month, int offset)
        cout << "December";
 
 
-    cout << ", " << year << "\n";
+    if(!yearCal) cout << " " << year << "\n";
+    else cout<<endl;
     // Display month header
     cout << "  Su  Mo  Tu  We  Th  Fr  Sa\n";
 
@@ -216,7 +279,16 @@ void display(int year, int month, int offset)
     // The loop for displaying the days and ending the line in the right place
     for ( dayOfWeek = 1; dayOfWeek <= numDaysMonth(year, month); dayOfWeek++ )
     {
-       cout << "  " <<  setw(2) << dayOfWeek;
+       cout << "  " <<  setw(2);
+       if((argc==1)&&(dayOfWeek==dayCal)){
+         printf("%c[%dm", 0x1B, 30);
+         printf("%c[%dm", 0x1B, 47);
+         cout << dayOfWeek;
+         printf("%c[%dm", 0x1B, 37);
+         printf("%c[%dm", 0x1B, 40);
+       }
+       else cout << dayOfWeek;
+       
        ++day;
        if (day == 8)
        {
@@ -226,5 +298,9 @@ void display(int year, int month, int offset)
     }
     if ( day >= 2 && day <= 7)
        cout << "\n";
-
- }
+    month++;
+    offset = computeOffset(year, month);
+    if(offset ==7) offset = 0;
+  }
+  while((month<13)&&yearCal);
+}

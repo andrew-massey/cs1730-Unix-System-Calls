@@ -14,14 +14,30 @@ void copy_file(FILE *fin, FILE* fout, int lineLimit);
 int main(int argc, char *argv[])
 {
     int lineLimit = 10;
-    char cpr[]= "-n";
     FILE *fp;
     int c = 0;
   
     if(argc==1)
     {
-        char* fil = 0;
-        cin >> fil;
+        char* fil;
+        char file[255];
+        cin >> file;
+        fil = file;
+        
+        string optcheck = fil;
+        char *point = &optcheck.at(0);
+        char optcheckchar = '-';
+        char *optcheckptr = &optcheckchar;
+        if(!strcmp(point,optcheckptr)){
+        
+        
+        if((fp= fopen(fil, "r"))!=NULL)
+        {
+            copy_file(fp, stdout, lineLimit);
+            fclose(fp);
+            exit(1);
+        }
+        }
         if((fp= fopen(fil, "r"))!=NULL)
         {
             copy_file(fp, stdout, lineLimit);
@@ -32,7 +48,21 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    if(argc > 2){
+    
+    
+    if(argc >= 2){
+       string optcheck = argv[1];
+       char *point = &optcheck.at(0);
+       char optcheckchar = '-';
+       char *optcheckptr = &optcheckchar;
+       if(((fp= fopen(argv[1], "r"))!=NULL)&&strcmp(point,optcheckptr))
+       {
+        copy_file(fp, stdout, lineLimit);
+        fclose(fp);
+        exit(1);
+       }
+
+       
        lineLimit = 0;
        while ((c = getopt (argc, argv, "123456789")) != -1){
           switch (c)
@@ -73,12 +103,30 @@ int main(int argc, char *argv[])
           }        
        }
     }
+    if((fp= fopen(argv[2], "r"))<0){
+      cout<<"FAIL";
+    }
+    
     cout << lineLimit<< endl;
-    if((fp= fopen(argv[2], "r"))!=NULL)
+    if((fp= fopen(argv[2], "r"))>0)
     {
         copy_file(fp, stdout, lineLimit);
         fclose(fp);
         exit(1);
+    }
+    else{
+      char* fil;
+      char file[255];
+      cin >> file;
+      fil = file;
+      if((fp= fopen(fil, "r"))!=NULL)
+      {
+        copy_file(fp, stdout, lineLimit);
+        fclose(fp);
+        exit(1);
+      }
+      copy_file(fp, stdout, lineLimit);
+      exit(1);
     }
    return 0;
 }

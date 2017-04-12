@@ -1,5 +1,12 @@
+// This is the lsd function, yet another C implement of the classic ls, using UNIX functions
+
+// Featuring "stat", "opendir", and "readdir"
+// Credits: Jalil Benayachi, ECE PARIS - under MIT license
+// contact [at] thejals.com
+
+// Also thanks to some contributors on Stackoverflow 
+
 #include <sys/types.h>
-#include <string>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -9,48 +16,63 @@
 #include <pwd.h>
 #include <grp.h>
 
-using namespace std;
+int main(int argc, char* argv[])
+{
 
-int main(int argc, char* argv[]){
-    //The directory: it's the folder we're browsing (we'll use an argument (argv) in order to identify it)
-    DIR *dir;
-    //The file: when a file is found in the directory readdir loop, it's going to be called this way.
-    struct dirent *fil;
-    //The stat: It's how we'll retrieve the stats associated to the file. 
+    //Defining the different components of the program
+        //The directory: it's the folder we're browsing (we'll use an argument (argv) in order to identify it)
+    DIR *directory;
+        //The file: when a file is found in the directory readdir loop, it's going to be called this way.
+    struct dirent *file;
+        //The stat: It's how we'll retrieve the stats associated to the file. 
     struct stat stats;
-    //will be used to determine the file owner & group
+        //will be used to determine the file owner & group
     struct passwd *tf; 
     struct group *gf;
-    
-    string pathString = "";
-    
+
+    //Creating a placeholder for the string. 
+    //We create this so later it can be properly adressed.
+    //It's reasonnable here to consider a 512 maximum lenght, as we're just going to use it to display a path to a file, 
+    //but we could have used a strlen/malloc combo and declared a simple buf[] at this moment
     char buf[512];
-    if(argc>1){
-        dir = opendir(argv[1]);
-        pathString = argv[1];
+
+    //It's time to assign directory to the argument: this way the user will be able to browse any folder simply by mentionning it 
+    //when launching the lsd program.
+    if(argc == 1){
+      char cwd[1024];
+      chdir("/path/to/change/directory/to");
+      getcwd(cwd, sizeof(cwd));
+      directory = opendir(cwd);
     }
     else
     {
-      dir = opendir(".");
-      pathString = ".";
+      directory = opendir(argv[1]);
     }
-    while((fil = readdir(dir)) != NULL) 
+    //If a file is found (readdir returns a NOT NULL value), the loop starts/keep going until it has listed all of them. 
+    while((file = readdir(directory)) != NULL) 
     {   
-        //defines the path to our file 
-        sprintf(buf, "%s/%s", pathString, fil->d_name);
-        //retrieve information about the file
+        //We sprint "directory/file" which defines the path to our file 
+        sprintf(buf, "%s/%s", argv[1], file->d_name);
+        //Then we use stat function in order to retrieve information about the file
         stat(buf, &stats);
 
+        //Now, we can print a few things !
+        // Here's the right order
+        // [file type] [permissions] [number of hard links] [owner] [group] [size in bytes] [time of last modification] [filename]
+
         // [file type]
+        //Let's start with the file type
+        //The stat manual is pretty complete and gives details about st_mode and S_IFMT: http://manpagesfr.free.fr/man/man2/stat.2.html
+        //
         switch (stats.st_mode & S_IFMT) {
-            case S_IFBLK:  printf("b"); break;
-            case S_IFCHR:  printf("c"); break; 
-            case S_IFDIR:  printf("d"); break; //It's a (sub)directory 
-            case S_IFIFO:  printf("p"); break; //fifo
-            case S_IFLNK:  printf("l"); break; //Sym link
-            case S_IFSOCK: printf("s"); break;
+            case S_IFBLK:  printf("b "); break;
+            case S_IFCHR:  printf("c "); break; 
+            case S_IFDIR:  printf("d "); break; //It's a (sub)directory 
+            case S_IFIFO:  printf("p "); break; //fifo
+            case S_IFLNK:  printf("l "); break; //Sym link
+            case S_IFSOCK: printf("s "); break;
             //Filetype isn't identified
-            default:       printf("-"); break;
+            default:       printf("- "); break;
                 }
         //[permissions]
         //Same for the permissions, we have to test the different rights
@@ -84,8 +106,8 @@ int main(int argc, char* argv[]){
         //And the easy-cheesy part
         //[size in bytes] [time of last modification] [filename]
         printf("%zu",stats.st_size);
-        printf(" %s", fil->d_name);
+        printf(" %s", file->d_name);
         printf(" %s", ctime(&stats.st_mtime));
     }
-    closedir(dir);
+    closedir(directory);
 }
