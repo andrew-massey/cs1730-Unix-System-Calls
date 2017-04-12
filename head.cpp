@@ -7,16 +7,26 @@
 
 #define LINELEN 256
 
+/**
+* head.cpp - replicates the head command from a UNIX system
+*/
+
 using namespace std;
 
 void copy_file(FILE *fin, FILE* fout, int lineLimit);
-
+/**
+* main(int argc,char *argv[]) - the driver for the program
+*
+* @params:
+*  argc - num of args
+*  argv - arguments
+*/
 int main(int argc, char *argv[])
 {
     int lineLimit = 10;
     FILE *fp;
     int c = 0;
-  
+    //standard input
     if(argc==1)
     {
         char* fil;
@@ -49,7 +59,7 @@ int main(int argc, char *argv[])
     }
     
     
-    
+    //file name and/or args
     if(argc >= 2){
        string optcheck = argv[1];
        char *point = &optcheck.at(0);
@@ -64,6 +74,8 @@ int main(int argc, char *argv[])
 
        
        lineLimit = 0;
+       
+       //getopts
        while ((c = getopt (argc, argv, "123456789")) != -1){
           switch (c)
           {
@@ -106,14 +118,13 @@ int main(int argc, char *argv[])
     if((fp= fopen(argv[2], "r"))<0){
       cout<<"FAIL";
     }
-    
-    cout << lineLimit<< endl;
     if((fp= fopen(argv[2], "r"))>0)
     {
         copy_file(fp, stdout, lineLimit);
         fclose(fp);
         exit(1);
     }
+    //another standard input, but with options added!
     else{
       char* fil;
       char file[255];
@@ -130,7 +141,7 @@ int main(int argc, char *argv[])
     }
    return 0;
 }
-
+//copy_file - an improved version of my copy_file method from my cat program
 void copy_file(FILE *fin, FILE* fout, int lineLimit)
 {
     char line[LINELEN];

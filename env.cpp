@@ -1,11 +1,13 @@
 #include<stdio.h>
 
 extern char **environ;
-
+/**
+*env.cpp - prints all of the environmental variables that are active for the user
+*/
 int main() {
-  //i will be count
+  //counter for env variables
   int count = 1;
-  //s is out
+  //output char*
   char *out = *environ;
 
   for (; out; count++) {

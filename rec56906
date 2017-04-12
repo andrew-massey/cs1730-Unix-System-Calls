@@ -1,0 +1,46 @@
+Clements-Massey-p3:
+total 1220
+-rwxr-xr-x. 1 ugrad  71723 Apr 11 23:26 cal
+-rw-r--r--. 1 ugrad   6894 Apr 11 22:51 cal.cpp
+-rw-r--r--. 1 ugrad    686 Apr 11 22:52 cal.h
+-rw-r--r--. 1 ugrad 103248 Apr 11 23:26 cal.o
+-rwxr-xr-x. 1 ugrad  38169 Apr 11 23:26 cksum
+-rw-r--r--. 1 ugrad   5188 Apr 11 23:22 cksum.cpp
+-rw-r--r--. 1 ugrad  52328 Apr 11 23:26 cksum.o
+-rwxr-xr-x. 1 ugrad  29330 Apr 11 23:26 date
+-rw-r--r--. 1 ugrad   1020 Apr 11 23:22 date.cpp
+-rw-r--r--. 1 ugrad  38360 Apr 11 23:26 date.o
+-rwxr-xr-x. 1 ugrad   9823 Apr 11 23:26 env
+-rw-r--r--. 1 ugrad    330 Apr 11 22:28 env.cpp
+-rw-r--r--. 1 ugrad   6096 Apr 11 23:26 env.o
+-rwxr-xr-x. 1 ugrad  10075 Apr 11 23:26 false
+-rw-r--r--. 1 ugrad     98 Apr 11 22:26 false.cpp
+-rw-r--r--. 1 ugrad   6480 Apr 11 23:26 false.o
+-rwxr-xr-x. 1 ugrad  64143 Apr 11 23:26 head
+-rw-r--r--. 1 ugrad   3575 Apr 11 22:58 head.cpp
+-rw-r--r--. 1 ugrad  88032 Apr 11 23:26 head.o
+-rwxr-xr-x. 1 ugrad  35347 Apr 11 23:26 ln
+-rw-r--r--. 1 ugrad   1237 Apr 11 23:22 ln.cpp
+-rw-r--r--. 1 ugrad  49160 Apr 11 23:26 ln.o
+-rwxr-xr-x. 1 ugrad  68325 Apr 11 23:41 ls
+-rw-r--r--. 1 ugrad   8370 Apr 11 23:41 ls.cpp
+-rw-r--r--. 1 ugrad  96112 Apr 11 23:41 ls.o
+-rw-r--r--. 1 ugrad    512 Apr 11 22:33 makefile
+-rwxr-xr-x. 1 ugrad  36254 Apr 11 23:27 mkdir
+-rw-r--r--. 1 ugrad   2513 Apr 11 23:22 mkdir.cpp
+-rw-r--r--. 1 ugrad  50672 Apr 11 23:27 mkdir.o
+-rwxr-xr-x. 1 ugrad  28447 Apr 11 23:27 pwd
+-rw-r--r--. 1 ugrad    279 Apr 11 22:26 pwd.cpp
+-rw-r--r--. 1 ugrad  36904 Apr 11 23:27 pwd.o
+-rw-r--r--. 1 ugrad    361 Apr 11 23:42 README.txt
+-rw-r--r--. 1 ugrad      0 Apr 11 23:43 rec56906
+-rwxr-xr-x. 1 ugrad  32468 Apr 11 23:27 tail
+-rw-r--r--. 1 ugrad   4034 Apr 11 23:22 tail.cpp
+-rw-r--r--. 1 ugrad  42184 Apr 11 23:27 tail.o
+-rwxr-xr-x. 1 ugrad  12674 Apr 11 23:27 true
+-rw-r--r--. 1 ugrad    167 Apr 11 22:25 true.cpp
+-rw-r--r--. 1 ugrad  11192 Apr 11 23:27 true.o
+-rwxr-xr-x. 1 ugrad  38165 Apr 11 23:27 wc
+-rw-r--r--. 1 ugrad   3667 Apr 11 23:22 wc.cpp
+-rw-r--r--. 1 ugrad  54096 Apr 11 23:27 wc.o
+/home/ugrads/massey/cs1730/Projects/Clements-Massey-p3:/home/work/cs1730a

@@ -9,8 +9,13 @@
 
 using namespace std;
 
-bool yearCal;
-int offset;
+/**
+* cal.cpp - creates a calendar based off of arguements given
+*/
+
+
+bool yearCal; //bool for if it prints the whole year
+int offset; 
 
 int getMonth(int month, int argc, char *argv[]);
 int getYear(int year, int argc, char *argv[]);
@@ -20,13 +25,20 @@ int numDaysMonth(int year, int month);
 bool isLeapYear(int year);
 void display(int year, int month, int offset, int argc);
 
+/**
+* main(int argc,char *argv[]) - the driver for the program
+*
+* @params:
+*  argc - num of args
+*  argv - arguments
+*/
+
 int main(int argc, char *argv[])
 {
    yearCal = false;
-   int numDays;
    int offset;
-   int month;
-   int year;
+   int month = 0;
+   int year = 0;
 
    month = getMonth(month, argc, argv);
 
@@ -38,7 +50,12 @@ int main(int argc, char *argv[])
 
    return 0;
 }
-
+/**
+* getMonth(int month, int argc, char *argv[]) - gets the month from
+*
+*
+*
+*/
 
 int getMonth(int month, int argc, char *argv[])
 {
@@ -121,14 +138,14 @@ int computeOffset(int year, int month)
    return offset;
 }
 
-
+//numDaysYear(int year) - returns number of days in a year
 
 int numDaysYear(int year)
 {
    int daysYear = 365 + isLeapYear(year);
    return daysYear;
 }
-
+// numDaysMonth(int year, int month) - returns number of days in a month
 int numDaysMonth(int year, int month)
 {
    int daysMonth;
@@ -165,7 +182,7 @@ int numDaysMonth(int year, int month)
 
    return daysMonth;
 }
-
+// isLeapYear(int year) - determines if it is a leap year
 bool isLeapYear(int year)
 {
   if(year<1752){
@@ -173,12 +190,19 @@ bool isLeapYear(int year)
     else{return false;}
   }
   else{  
-    if ( year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+    if ( (year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
       return true;
     else
       return false;
   }
 }
+
+/**
+* display(int year, int month, int offset, int argc) - displays the calendar
+*
+*  @params:
+*  year - the year; month - the month; offset - the offset of days; argc - num of args
+*/
 void display(int year, int month, int offset, int argc)
  {
    int dayCal = 0;
@@ -198,7 +222,7 @@ void display(int year, int month, int offset, int argc)
       
     }
     
-    
+ //does once for sure, but repeats if it's for a whole year
  do{
     if(offset == 7) offset = 0;
     int dayOfWeek;
